@@ -133,6 +133,7 @@ body {
   font: inherit;
   background: rgba(255, 255, 255, 0.06);
   color: #e8edf5;
+  appearance: none;
 }
 
 .field input::placeholder,
@@ -145,6 +146,11 @@ body {
 .field textarea:focus {
   outline: 2px solid #7c3aed;
   border-color: #7c3aed;
+}
+
+select option {
+  background: #0f172a;
+  color: #e8edf5;
 }
 
 .form__actions {
