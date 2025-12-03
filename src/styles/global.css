@@ -94,6 +94,15 @@ body {
   overflow: visible;
 }
 
+.panel--scroll {
+  overflow-x: auto;
+}
+
+.games-content {
+  min-width: 1200px;
+  width: max-content;
+}
+
 .panel--stacked {
   margin-top: 20px;
 }
