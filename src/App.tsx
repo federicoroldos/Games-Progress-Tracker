@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import GameFilters from './components/GameFilters';
 import GameForm from './components/GameForm';
 import GameList from './components/GameList';
+import BackupPanel from './components/BackupPanel';
 import { useGameStorage } from './hooks/useGameStorage';
 import { Game, GameRanking, GameStatus } from './types/Game';
 
@@ -10,7 +11,7 @@ type SortOption = 'fecha' | 'titulo' | 'ranking';
 const rankingOrder: GameRanking[] = ['GOTY', 'S', 'A', 'B', 'C', 'D', 'E', 'F'];
 
 const App = () => {
-  const { games, addGame, updateGame, deleteGame } = useGameStorage();
+  const { games, addGame, updateGame, deleteGame, exportJson, importJson } = useGameStorage();
   const [statusFilter, setStatusFilter] = useState<GameStatus | 'todos'>('todos');
   const [rankingFilter, setRankingFilter] = useState<GameRanking | 'todos'>('todos');
   const [sortBy, setSortBy] = useState<SortOption>('fecha');
@@ -65,7 +66,7 @@ const App = () => {
     <div className="app">
       <header className="app__header">
         <div>
-          <p className="app__eyebrow">GameTracker</p>
+          <p className="app__eyebrow">Games Progress Tracker</p>
           <h1>Tu lista de videojuegos en un solo lugar</h1>
           <p className="app__subtitle">
             Agrega, edita y organiza los juegos que quieres jugar, estás jugando o ya
@@ -119,6 +120,8 @@ const App = () => {
           <GameList games={filteredGames} onEdit={handleEdit} onDelete={deleteGame} />
         </section>
       </main>
+
+      <BackupPanel onExportJson={exportJson} onImportJson={importJson} />
     </div>
   );
 };
