@@ -44,7 +44,6 @@ const GameList = ({ games, onEdit, onDelete }: Props) => {
           <span>Años pasado</span>
           <span>Horas totales</span>
           <span>Comentario</span>
-          <span>Creado</span>
           <span>Acciones</span>
         </div>
 
@@ -66,7 +65,6 @@ const GameList = ({ games, onEdit, onDelete }: Props) => {
             <span>{game.yearsPlayed || '—'}</span>
             <span>{game.totalHours ?? '—'}</span>
             <span className="table__comment">{game.comment || '—'}</span>
-            <span>{formatDate(game.createdAt)}</span>
             <span className="table__actions">
               <button className="button button--ghost" onClick={() => onEdit(game)}>
                 Editar

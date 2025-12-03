@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import GameFilters from './components/GameFilters';
 import GameForm from './components/GameForm';
 import GameList from './components/GameList';
@@ -7,31 +7,36 @@ import LegendPanel from './components/LegendPanel';
 import { useGameStorage } from './hooks/useGameStorage';
 import { Game, GameRanking, GameStatus } from './types/Game';
 
-type SortOption = 'fecha' | 'titulo' | 'ranking';
+type SortOption = 'titulo' | 'ranking';
 
 const rankingOrder: GameRanking[] = ['S+', 'S', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
 const App = () => {
-  const { games, addGame, updateGame, deleteGame, exportJson, importJson } = useGameStorage();
+  const { games, addGame, addMany, updateGame, deleteGame, exportJson, importJson } =
+    useGameStorage();
   const [statusFilter, setStatusFilter] = useState<GameStatus | 'todos'>('todos');
   const [rankingFilter, setRankingFilter] = useState<GameRanking | 'todos'>('todos');
-  const [sortBy, setSortBy] = useState<SortOption>('fecha');
+  const [sortBy, setSortBy] = useState<SortOption>('titulo');
   const [editing, setEditing] = useState<Game | null>(null);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const itemsPerPage = 9;
 
   const filteredGames = useMemo(() => {
+    const bySearch = search
+      ? games.filter((game) => game.title.toLowerCase().includes(search.toLowerCase()))
+      : games;
+
     const byStatus =
       statusFilter === 'todos'
-        ? games
-        : games.filter((game) => game.status === statusFilter);
+        ? bySearch
+        : bySearch.filter((game) => game.status === statusFilter);
 
     const byRanking =
       rankingFilter === 'todos'
         ? byStatus
         : byStatus.filter((game) => game.ranking === rankingFilter);
-
-    if (sortBy === 'titulo') {
-      return [...byRanking].sort((a, b) => a.title.localeCompare(b.title, 'es'));
-    }
 
     if (sortBy === 'ranking') {
       return [...byRanking].sort(
@@ -39,10 +44,30 @@ const App = () => {
       );
     }
 
-    return [...byRanking].sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-  }, [games, statusFilter, rankingFilter, sortBy]);
+    return [...byRanking].sort((a, b) => a.title.localeCompare(b.title, 'es'));
+  }, [games, search, statusFilter, rankingFilter, sortBy]);
+
+  const pageCount = Math.max(1, Math.ceil(filteredGames.length / itemsPerPage));
+  useEffect(() => {
+    if (page > pageCount) {
+      setPage(pageCount);
+    }
+  }, [page, pageCount]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter, rankingFilter, sortBy, search]);
+
+  const pagedGames = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return filteredGames.slice(start, start + itemsPerPage);
+  }, [filteredGames, page]);
+
+  const handleSearchSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+    setSearch(searchInput.trim());
+    setPage(1);
+  };
 
   const handleSubmit = (
     data: Omit<Game, 'id' | 'createdAt'>,
@@ -110,6 +135,17 @@ const App = () => {
         <section className="panel">
           <div className="panel__header">
           <h2>Juegos guardados</h2>
+          <form className="search-box" onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              placeholder="Buscar por título..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button type="submit" className="button button--ghost">
+              Buscar
+            </button>
+          </form>
           <GameFilters
             statusFilter={statusFilter}
             rankingFilter={rankingFilter}
@@ -120,11 +156,45 @@ const App = () => {
           />
         </div>
 
-          <GameList games={filteredGames} onEdit={handleEdit} onDelete={deleteGame} />
+          <GameList games={pagedGames} onEdit={handleEdit} onDelete={deleteGame} />
+          <div className="pagination">
+            <button
+              className="page-btn"
+              onClick={() => setPage(1)}
+              disabled={page === 1}
+              aria-label="Primera página"
+            >
+              «
+            </button>
+            {Array.from({ length: pageCount }, (_, idx) => idx + 1)
+              .filter((n) => n >= page - 1 && n <= page + 4)
+              .map((n) => (
+                <button
+                  key={n}
+                  className={`page-btn ${n === page ? 'page-btn--active' : ''}`}
+                  onClick={() => setPage(n)}
+                  aria-label={`Página ${n}`}
+                >
+                  {n}
+                </button>
+              ))}
+            <button
+              className="page-btn"
+              onClick={() => setPage(pageCount)}
+              disabled={page === pageCount}
+              aria-label="Última página"
+            >
+              »
+            </button>
+          </div>
         </section>
       </main>
 
-      <BackupPanel onExportJson={exportJson} onImportJson={importJson} />
+      <BackupPanel
+        onExportJson={exportJson}
+        onImportJson={importJson}
+        onImportExcel={(items) => addMany(items)}
+      />
       <LegendPanel />
     </div>
   );
