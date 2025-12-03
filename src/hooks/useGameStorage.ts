@@ -57,5 +57,34 @@ export const useGameStorage = () => {
     setGames((prev) => prev.filter((game) => game.id !== id));
   };
 
-  return { games, addGame, updateGame, deleteGame };
+  const exportJson = () => JSON.stringify(games, null, 2);
+
+  const importJson = (json: string) => {
+    try {
+      const data = JSON.parse(json);
+      if (!Array.isArray(data)) {
+        throw new Error('El archivo no tiene el formato esperado');
+      }
+      const sanitized = data
+        .map((item) => ({
+          ...item,
+          ranking: (item.ranking as GameRanking) ?? DEFAULT_RANKING
+        }))
+        .filter(
+          (item): item is Game =>
+            Boolean(item.id) &&
+            typeof item.id === 'string' &&
+            Boolean(item.title) &&
+            typeof item.title === 'string' &&
+            Boolean(item.createdAt)
+        );
+      setGames(sanitized);
+      return { ok: true, count: sanitized.length };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Error al importar JSON';
+      return { ok: false, message };
+    }
+  };
+
+  return { games, addGame, updateGame, deleteGame, exportJson, importJson };
 };

@@ -93,6 +93,10 @@ body {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
 }
 
+.panel--stacked {
+  margin-top: 20px;
+}
+
 .panel h2 {
   margin-top: 0;
 }
@@ -263,6 +267,45 @@ select option {
 
 .muted {
   color: #94a3b8;
+}
+
+.backup-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 12px;
+}
+
+.backup-group h3 {
+  margin: 0 0 6px;
+}
+
+.backup-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.status-text {
+  margin-top: 12px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.drive-actions {
+  margin-top: 12px;
+}
+
+.subnote {
+  margin-top: 8px;
+}
+
+.auth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .text-strong {
