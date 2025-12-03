@@ -132,60 +132,62 @@ const App = () => {
           />
         </section>
 
-        <section className="panel">
-          <div className="panel__header">
-          <h2>Juegos guardados</h2>
-          <form className="search-box" onSubmit={handleSearchSubmit}>
-            <input
-              type="text"
-              placeholder="Buscar por título..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <button type="submit" className="button button--ghost">
-              Buscar
-            </button>
-          </form>
-          <GameFilters
-            statusFilter={statusFilter}
-            rankingFilter={rankingFilter}
-            sortBy={sortBy}
-            onStatusChange={setStatusFilter}
-            onRankingChange={setRankingFilter}
-            onSortChange={setSortBy}
-          />
-        </div>
-
-          <GameList games={pagedGames} onEdit={handleEdit} onDelete={deleteGame} />
-          <div className="pagination">
-            <button
-              className="page-btn"
-              onClick={() => setPage(1)}
-              disabled={page === 1}
-              aria-label="Primera página"
-            >
-              «
-            </button>
-            {Array.from({ length: pageCount }, (_, idx) => idx + 1)
-              .filter((n) => n >= page - 1 && n <= page + 4)
-              .map((n) => (
-                <button
-                  key={n}
-                  className={`page-btn ${n === page ? 'page-btn--active' : ''}`}
-                  onClick={() => setPage(n)}
-                  aria-label={`Página ${n}`}
-                >
-                  {n}
+        <section className="panel panel--scroll">
+          <div className="games-content">
+            <div className="panel__header">
+              <h2>Juegos guardados</h2>
+              <form className="search-box" onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  placeholder="Buscar por título..."
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <button type="submit" className="button button--ghost">
+                  Buscar
                 </button>
-              ))}
-            <button
-              className="page-btn"
-              onClick={() => setPage(pageCount)}
-              disabled={page === pageCount}
-              aria-label="Última página"
-            >
-              »
-            </button>
+              </form>
+              <GameFilters
+                statusFilter={statusFilter}
+                rankingFilter={rankingFilter}
+                sortBy={sortBy}
+                onStatusChange={setStatusFilter}
+                onRankingChange={setRankingFilter}
+                onSortChange={setSortBy}
+              />
+            </div>
+
+            <GameList games={pagedGames} onEdit={handleEdit} onDelete={deleteGame} />
+            <div className="pagination">
+              <button
+                className="page-btn"
+                onClick={() => setPage(1)}
+                disabled={page === 1}
+                aria-label="Primera página"
+              >
+                «
+              </button>
+              {Array.from({ length: pageCount }, (_, idx) => idx + 1)
+                .filter((n) => n >= page - 1 && n <= page + 4)
+                .map((n) => (
+                  <button
+                    key={n}
+                    className={`page-btn ${n === page ? 'page-btn--active' : ''}`}
+                    onClick={() => setPage(n)}
+                    aria-label={`Página ${n}`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              <button
+                className="page-btn"
+                onClick={() => setPage(pageCount)}
+                disabled={page === pageCount}
+                aria-label="Última página"
+              >
+                »
+              </button>
+            </div>
           </div>
         </section>
       </main>
