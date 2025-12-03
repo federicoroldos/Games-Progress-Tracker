@@ -1,6 +1,6 @@
 import { GameRanking, GameStatus } from '../types/Game';
 
-type SortOption = 'fecha' | 'titulo' | 'ranking';
+type SortOption = 'titulo' | 'ranking';
 
 interface Props {
   statusFilter: GameStatus | 'todos';
@@ -80,7 +80,6 @@ const GameFilters = ({
           value={sortBy}
           onChange={(event) => onSortChange(event.target.value as SortOption)}
         >
-          <option value="fecha">Fecha (más reciente)</option>
           <option value="titulo">Título (A-Z)</option>
           <option value="ranking">Ranking</option>
         </select>

@@ -31,6 +31,7 @@ npm run preview
 - Exportar JSON: desde la app, sección "Respaldo y sincronización" → "Exportar JSON".
 - Importar JSON: "Importar JSON" y selecciona el archivo.
 - Google Drive: inicia sesión con Google (scope `drive.appdata`). El backup se guarda en la carpeta oculta `appDataFolder`, la app prepara el archivo automáticamente y no necesitas un `fileId`. Usa "Preparar archivo", luego "Subir a Drive" / "Descargar de Drive".
+- Importar Excel: desde "Respaldo y sincronización" → "Archivo local" usa "Importar Excel" con el archivo `Registro de Juegos v2 ORIGINAL.xlsm` (usa las columnas del Excel original; el campo Fotos se ignora).
 
 ### Configuración de Firebase (auth con Google)
 1) Crea un proyecto en Firebase, habilita Google Sign-In en Authentication.  

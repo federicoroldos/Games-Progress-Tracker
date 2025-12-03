@@ -110,6 +110,43 @@ body {
   margin-bottom: 12px;
 }
 
+.search-box input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8edf5;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.page-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8edf5;
+  cursor: pointer;
+}
+
+.page-btn--active {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-color: transparent;
+  color: #fff;
+}
+
 .filters {
   display: flex;
   gap: 12px;
@@ -255,8 +292,8 @@ select option {
 
 .table__header.wide,
 .table__row.wide {
-  grid-template-columns: 1.5fr 1.2fr 1fr 0.7fr 1.4fr 1.4fr 1.1fr 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr 2fr 1.2fr 1fr;
-  min-width: 2000px;
+  grid-template-columns: 1.5fr 1.2fr 1fr 0.7fr 1.4fr 1.4fr 1.1fr 1.1fr 1.1fr 1.1fr 0.9fr 0.9fr 0.9fr 2fr 1.1fr;
+  min-width: 1900px;
 }
 
 .table__header {
@@ -388,6 +425,7 @@ select option {
 
 .drive-actions {
   margin-top: 16px;
+  align-items: center;
 }
 
 .subnote {
@@ -414,6 +452,11 @@ select option {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+}
+
+.auth-actions {
+  display: flex;
   gap: 8px;
 }
 

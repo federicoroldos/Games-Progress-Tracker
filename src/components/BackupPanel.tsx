@@ -4,15 +4,19 @@ import {
   downloadFromAppData,
   uploadToAppData
 } from '../utils/googleDriveClient';
+import { parseExcelFile } from '../utils/excelImport';
+import { Game } from '../types/Game';
 import { useGoogleAuth } from '../hooks/useGoogleAuth';
 
 interface Props {
   onExportJson: () => string;
   onImportJson: (json: string) => { ok: boolean; message?: string; count?: number };
+  onImportExcel: (games: Omit<Game, 'id' | 'createdAt'>[]) => void;
 }
 
-const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
+const BackupPanel = ({ onExportJson, onImportJson, onImportExcel }: Props) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const excelInputRef = useRef<HTMLInputElement | null>(null);
   const { user, accessToken, loading: authLoading, signIn, signOut } = useGoogleAuth();
   const [driveFileId, setDriveFileId] = useState('');
   const [status, setStatus] = useState<string | null>(null);
@@ -60,6 +64,10 @@ const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
     fileInputRef.current?.click();
   };
 
+  const handleOpenExcel = () => {
+    excelInputRef.current?.click();
+  };
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -75,6 +83,25 @@ const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
     };
     reader.readAsText(file);
     event.target.value = '';
+  };
+
+  const handleExcelChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setLoading(true);
+    setStatus('Importando Excel...');
+    try {
+      const parsed = await parseExcelFile(file);
+      onImportExcel(parsed);
+      setStatus(`Importado desde Excel (${parsed.length} registros)`);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Error al importar Excel (usa el archivo original)';
+      setStatus(message);
+    } finally {
+      setLoading(false);
+      event.target.value = '';
+    }
   };
 
   const handleUploadDrive = async () => {
@@ -154,20 +181,9 @@ const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
         <div className="backup-group">
           <h3>Google Drive</h3>
           <div className="auth-row">
-            <div>
-              <p className="muted">
-                {user ? `Sesión: ${user.email ?? user.displayName ?? 'Usuario'}` : 'Sin sesión'}
-              </p>
-            </div>
-            {user ? (
-              <button className="button button--ghost" onClick={signOut} disabled={authLoading}>
-                Cerrar sesión
-              </button>
-            ) : (
-              <button className="button" onClick={signIn} disabled={authLoading}>
-                Iniciar con Google
-              </button>
-            )}
+            <p className="muted">
+              {user ? `Sesión: ${user.email ?? user.displayName ?? 'Usuario'}` : 'Sin sesión'}
+            </p>
           </div>
           <div className="backup-buttons drive-actions">
             <button className="button" type="button" onClick={handleEnsure} disabled={loading || authLoading}>
@@ -183,6 +199,15 @@ const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
             >
               Descargar de Drive
             </button>
+            {user ? (
+              <button className="button button--ghost" onClick={signOut} disabled={authLoading}>
+                Cerrar sesión
+              </button>
+            ) : (
+              <button className="button" onClick={signIn} disabled={authLoading}>
+                Iniciar con Google
+              </button>
+            )}
           </div>
           {status && <p className="status-text">{status}</p>}
         </div>
@@ -196,6 +221,9 @@ const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
             <button className="button button--ghost" onClick={handleOpenFile}>
               Importar JSON
             </button>
+            <button className="button button--ghost" onClick={handleOpenExcel}>
+              Importar Excel
+            </button>
             <input
               ref={fileInputRef}
               type="file"
@@ -203,10 +231,14 @@ const BackupPanel = ({ onExportJson, onImportJson }: Props) => {
               hidden
               onChange={handleFileChange}
             />
+            <input
+              ref={excelInputRef}
+              type="file"
+              accept=".xls,.xlsx,.xlsm"
+              hidden
+              onChange={handleExcelChange}
+            />
           </div>
-          <p className="muted subnote">
-            Exporta/Importa en JSON localmente o sincroniza con Google Drive (appDataFolder).
-          </p>
         </div>
       </div>
     </div>

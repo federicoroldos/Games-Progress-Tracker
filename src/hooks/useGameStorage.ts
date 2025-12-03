@@ -58,9 +58,17 @@ export const useGameStorage = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(games));
   }, [games]);
 
+  const sanitize = (input: GameInput): GameInput => ({
+    ...input,
+    ranking: VALID_RANKINGS.includes(input.ranking) ? input.ranking : DEFAULT_RANKING,
+    status: VALID_STATUSES.includes(input.status) ? input.status : DEFAULT_STATUS,
+    lastSessionHours: input.lastSessionHours ?? null,
+    totalHours: input.totalHours ?? null
+  });
+
   const addGame = (input: GameInput) => {
     const newGame: Game = {
-      ...input,
+      ...sanitize(input),
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString()
     };
@@ -105,5 +113,15 @@ export const useGameStorage = () => {
     }
   };
 
-  return { games, addGame, updateGame, deleteGame, exportJson, importJson };
+  const addMany = (items: GameInput[]) => {
+    const mapped: Game[] = items.map((input) => ({
+      ...sanitize(input),
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString()
+    }));
+    setGames((prev) => [...prev, ...mapped]);
+    return mapped.length;
+  };
+
+  return { games, addGame, addMany, updateGame, deleteGame, exportJson, importJson };
 };
