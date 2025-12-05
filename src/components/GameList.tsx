@@ -15,8 +15,8 @@ const GameList = ({ games, onEdit, onDelete, resetScrollKey }: Props) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const tableCols = "1.1fr 0.55fr 0.45fr 0.32fr 0.62fr 0.55fr 0.8fr";
   const tableColsWide =
-    "8.0fr 2.6fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.0fr 2.5fr 3.0fr";
-  const tableMinWidth = "1550px";
+    "4.3fr 1.5fr 1.8fr 1.3fr 3.5fr 3.5fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 4.0fr 2.0fr";
+  const tableMinWidth = "2900px";
 
   useLayoutEffect(() => {
     const root = document.documentElement;
