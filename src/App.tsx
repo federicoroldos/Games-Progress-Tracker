@@ -104,83 +104,36 @@ const App = () => {
           <h1>{t.header.title}</h1>
           <p className="app__subtitle">{t.header.subtitle}</p>
         </div>
-        <div className="app__header-actions">
-          <LanguageSwitcher />
-          <div className="app__stats">
-            <div className="stat">
-              <span className="stat__label">{t.stats.total}</span>
-              <span className="stat__value">{games.length}</span>
-            </div>
-            <div className="stat">
-              <span className="stat__label">{t.stats.unplayed}</span>
-              <span className="stat__value">{games.filter((g) => g.status === "Sin probar").length}</span>
-            </div>
-            <div className="stat">
-              <span className="stat__label">{t.stats.started}</span>
-              <span className="stat__value">{games.filter((g) => g.status === "Empezado").length}</span>
-            </div>
-            <div className="stat">
-              <span className="stat__label">{t.stats.completed}</span>
-              <span className="stat__value">{games.filter((g) => g.status === "Completado").length}</span>
-            </div>
-            <div className="stat">
-              <span className="stat__label">{t.stats.platinum}</span>
-              <span className="stat__value">{games.filter((g) => g.status === "Platino").length}</span>
-            </div>
-            <div className="stat">
-              <span className="stat__label">{t.stats.abandoned}</span>
-              <span className="stat__value">{games.filter((g) => g.status === "Abandonado").length}</span>
-            </div>
+        <div className="app__stats">
+          <div className="stat">
+            <span className="stat__label">Total</span>
+            <span className="stat__value">{games.length}</span>
           </div>
-        </div>
-      </header>
-
-      <section className="panel auth-hero">
-        <div className="hero-grid">
-          <div className="hero-login">
-            <h2>{t.auth.title}</h2>
-            <p className="muted">{t.auth.description}</p>
-            <div className="auth-actions">
-              {isAuthenticated ? (
-                <>
-                  <span className="pill pill--success pill--xl">
-                    {t.auth.activeSession} {user?.email ? `· ${user.email}` : ""}
-                  </span>
-                  <button className="button button--xl button--secondary" onClick={signOut} disabled={authLoading}>
-                    {t.auth.signOut}
-                  </button>
-                </>
-              ) : (
-                <button className="button button--xl" onClick={signIn} disabled={authLoading}>
-                  {t.auth.signIn}
-                </button>
-              )}
-            </div>
-            <div className="hero-steps">
-              <div className="step-card">
-                <span className="pill">1</span>
-                <p>{t.steps[0]}</p>
-              </div>
-              <div className="step-card">
-                <span className="pill">2</span>
-                <p>{t.steps[1]}</p>
-              </div>
-              <div className="step-card">
-                <span className="pill">3</span>
-                <p>{t.steps[2]}</p>
-              </div>
-            </div>
+          <div className="stat">
+            <span className="stat__label">Sin probar</span>
+            <span className="stat__value">
+              {games.filter((g) => g.status === 'Sin probar').length}
+            </span>
           </div>
-          <div className="hero-drive">
-            <BackupPanel
-              onExportJson={exportJson}
-              onImportJson={importJson}
-              onImportExcel={(items) => addMany(items)}
-              showDrive
-              showLocal={false}
-              title={t.backup.title}
-              authContext={{ user, accessToken, loading: authLoading, signIn, signOut }}
-            />
+          <div className="stat">
+            <span className="stat__label">Empezado</span>
+            <span className="stat__value">{games.filter((g) => g.status === 'Empezado').length}</span>
+          </div>
+          <div className="stat">
+            <span className="stat__label">Completado</span>
+            <span className="stat__value">
+              {games.filter((g) => g.status === 'Completado').length}
+            </span>
+          </div>
+          <div className="stat">
+            <span className="stat__label">Platino</span>
+            <span className="stat__value">{games.filter((g) => g.status === 'Platino').length}</span>
+          </div>
+          <div className="stat">
+            <span className="stat__label">Abandonado</span>
+            <span className="stat__value">
+              {games.filter((g) => g.status === 'Abandonado').length}
+            </span>
           </div>
         </div>
       </section>

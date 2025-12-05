@@ -251,22 +251,20 @@ const BackupPanel = ({
         )}
       </div>
 
-      {showDrive && (
-        <div className="backup-console">
-          <div className="backup-console__header">
-            <span>{t.backup.consoleTitle}</span>
-          </div>
-          <div className="backup-console__body">
-            {logs.length ? (
-              logs.map((line, idx) => (
-                <div key={idx} className="backup-console__line">
-                  {line}
-                </div>
-              ))
-            ) : (
-              <p className="muted">{t.backup.consoleEmpty}</p>
-            )}
-          </div>
+      <div className="backup-console">
+        <div className="backup-console__header">
+          <span>Consola de respaldo</span>
+        </div>
+        <div className="backup-console__body">
+          {logs.length ? (
+            logs.map((line, idx) => (
+              <div key={idx} className="backup-console__line">
+                {line}
+              </div>
+            ))
+          ) : (
+            <p className="muted">Sin eventos aún.</p>
+          )}
         </div>
       )}
     </div>
