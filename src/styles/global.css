@@ -379,6 +379,8 @@ select option {
   color: #cbd5e1;
   white-space: normal;
   word-break: break-word;
+  overflow: visible;
+  text-overflow: initial;
 }
 
 .table__header span,
@@ -387,6 +389,27 @@ select option {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.table__header span.table__comment,
+.table__row span.table__comment {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.table__text-wrap {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-break: break-word;
+}
+
+.table__header span.table__text-wrap,
+.table__row span.table__text-wrap {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .table__actions {
