@@ -1,5 +1,5 @@
 # Games Progress Tracker
-Webapp simple en React + TypeScript para llevar un registro de videojuegos, filtros y persistencia en `localStorage`.
+Webapp simple en React + TypeScript para llevar un registro de videojuegos, filtros y persistencia en Google Drive.
 
 ## Requisitos previos
 - Node.js 18+
