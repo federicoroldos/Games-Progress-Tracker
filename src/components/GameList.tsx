@@ -15,7 +15,7 @@ const GameList = ({ games, onEdit, onDelete, resetScrollKey }: Props) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const tableCols = "1.1fr 0.55fr 0.45fr 0.32fr 0.62fr 0.55fr 0.8fr";
   const tableColsWide =
-    "4.3fr 1.5fr 1.8fr 1.3fr 3.5fr 3.5fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 4.0fr 2.0fr";
+    "4.0fr 1.5fr 1.8fr 1.3fr 3.5fr 3.5fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 1.9fr 4.0fr 2.0fr";
   const tableMinWidth = "2900px";
 
   useLayoutEffect(() => {
@@ -65,12 +65,12 @@ const GameList = ({ games, onEdit, onDelete, resetScrollKey }: Props) => {
     <div className="table-wrapper" ref={wrapperRef}>
       <div className="table wide" style={columnStyles}>
         <div className="table__header wide" style={wideGridStyle}>
-          <span>Titulo</span>
-          <span>Plataforma</span>
+          <span className="table__text-wrap">Titulo</span>
+          <span className="table__text-wrap">Plataforma</span>
           <span>Estado</span>
           <span>Ranking</span>
-          <span>Publisher</span>
-          <span>Generos</span>
+          <span className="table__text-wrap">Publisher</span>
+          <span className="table__text-wrap">Generos</span>
           <span>Fecha lanzamiento</span>
           <span>Primera vez</span>
           <span>Inicio ultima</span>
@@ -86,12 +86,12 @@ const GameList = ({ games, onEdit, onDelete, resetScrollKey }: Props) => {
           const statusClass = game.status.replace(/\s+/g, "-");
           return (
             <div key={game.id} className="table__row wide" style={wideGridStyle}>
-              <span className="text-strong">{game.title}</span>
-              <span>{game.platform || "-"}</span>
+              <span className="text-strong table__text-wrap">{game.title}</span>
+              <span className="table__text-wrap">{game.platform || "-"}</span>
               <span className={`badge badge--${statusClass}`}>{game.status}</span>
               <span className="badge badge--ranking">{game.ranking}</span>
-              <span>{game.publisher || "-"}</span>
-              <span className="table__comment">{game.genres || "-"}</span>
+              <span className="table__text-wrap">{game.publisher || "-"}</span>
+              <span className="table__text-wrap">{game.genres || "-"}</span>
               <span>{formatDate(game.releaseDate)}</span>
               <span>{formatDate(game.firstPlayedAt)}</span>
               <span>{formatDate(game.startDate)}</span>
