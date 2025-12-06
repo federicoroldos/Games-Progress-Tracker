@@ -121,7 +121,7 @@ const translations = {
       exportJson: 'Exportar JSON',
       importJson: 'Importar JSON',
       importExcel: 'Importar Excel',
-      consoleTitle: 'Salida en Consola',
+      consoleTitle: 'Salida en consola',
       consoleEmpty: 'Sin eventos aún.',
       messages: {
         ensureFile: 'Buscando/creando backup en Drive (appData)...',
@@ -441,7 +441,7 @@ interface I18nContextValue {
 const I18nContext = createContext<I18nContextValue | undefined>(undefined);
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
-  const [lang, setLang] = useState<Language>('es');
+  const [lang, setLang] = useState<Language>('en');
 
   const dateFormatter = useMemo(
     () =>
