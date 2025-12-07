@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { GameRanking, GameStatus } from './types/Game';
 
 export type Language = 'es' | 'en';
@@ -226,7 +226,7 @@ const translations = {
       started: 'In progress',
       completed: 'Completed',
       platinum: 'Platinum',
-      abandoned: 'Dropped'
+      abandoned: 'Abandoned'
     },
     auth: {
       title: 'Sign In',
@@ -376,7 +376,7 @@ const translations = {
         { label: 'Completed', desc: 'All content played, maybe missing achievements.' },
         { label: 'Finished', desc: 'Main story finished, not all side content.' },
         { label: 'In progress', desc: 'Started and intend to finish.' },
-        { label: 'Dropped', desc: 'Dropped for some reason.' },
+        { label: 'Abandoned', desc: 'Abandoned for some reason.' },
         { label: 'Tried', desc: 'Only tried it.' },
         { label: 'Not started', desc: 'Haven’t played it yet.' },
         { label: 'N/A', desc: 'State not applicable.' }
@@ -403,7 +403,7 @@ const translations = {
       Pasado: 'Finished',
       Empezado: 'In progress',
       'Sin probar': 'Not started',
-      Abandonado: 'Dropped',
+      Abandonado: 'Abandoned',
       Probado: 'Tried',
       'No aplica': 'N/A'
     },
@@ -442,6 +442,10 @@ const I18nContext = createContext<I18nContextValue | undefined>(undefined);
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
   const [lang, setLang] = useState<Language>('en');
+
+  useEffect(() => {
+    document.documentElement.lang = localeMap[lang];
+  }, [lang]);
 
   const dateFormatter = useMemo(
     () =>
