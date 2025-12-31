@@ -2,7 +2,7 @@
 Simple React + TypeScript web app to track video games, filter them, and persist data with Google Drive.
 
 ## Usage
-Use the app via the [link](https://federicoroldos.github.io/gamesCompletitionTracker/).
+Use the app via the [link](https://federicoroldos.github.io/Games-Progress-Tracker/).
 
 ## Prerequisites
 - Node.js 18+
