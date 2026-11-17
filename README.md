@@ -12,14 +12,26 @@ Use the app via the [link](https://federicoroldos.github.io/Games-Progress-Track
 npm install
 ```
 
+Google sign-in goes through Firebase, so the app needs a Firebase project. Create a `.env` file in the repo root with its web app settings (Firebase console → Project settings → Your apps):
+
+```bash
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=...
+VITE_FIREBASE_PROJECT_ID=...
+VITE_FIREBASE_APP_ID=...
+```
+
+In Google Cloud, enable the **Google Drive API** for that project and allow the `https://www.googleapis.com/auth/drive.appdata` scope.
+
 ## Development
 ```bash
-npm run build
+npm run dev        # start the dev server
+npm run build      # type-check and build into dist/
+npm run preview    # serve the built version locally
 ```
-```bash
-npm run dev
-```
-Starts the Vite dev server in development mode.
+
+## Deploy
+Every push to `main` builds the app and publishes it to GitHub Pages ([`deploy.yml`](.github/workflows/deploy.yml)). The workflow reads the four `VITE_FIREBASE_*` values from the repository's **Actions secrets**, so set them there too.
 
 ## Features
 - Add, list, edit, and delete games.
